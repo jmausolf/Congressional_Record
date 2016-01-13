@@ -140,8 +140,8 @@ def get_congressional_records():
 
 	#f = open('congressional_records_URLs2.csv', 'w')
 	try:
-		#for dt in range(0, len(x)):
-		for dt in range(300, 350):
+		for dt in range(0, len(x)):
+		#for dt in range(300, 350):
 			date = str(x[dt]).replace("'", "").replace(",", "-").replace(" ", "").replace("(", "").replace(")", "")
 			url = str(getfullURL(date))
 
@@ -149,7 +149,7 @@ def get_congressional_records():
 			print "Downloading congressional record for date: ", date
 			#full_url = str([url]).replace("[", "").replace("]", "")
 			#print full_url
-			signal.alarm(16)
+			signal.alarm(20)
 			try:
 				filename = wget.download(url)
 				print "\n"
@@ -158,17 +158,31 @@ def get_congressional_records():
 
 			except TimeoutException:
 				print "Timeout exception"
+				f = open('congressional_records_exception_URLs.csv', 'a')
+				try:
+						f.write(u'%s\n' % (url))
+				finally:
+					f.close()
 				continue # continue the for loop if function A takes more than 5 second
 
 			except:
 				time.sleep(5.5)
 				print "No congression record found, date: ", date
-				#time.sleep(0.5)
+				f = open('congressional_records_exception_URLs.csv', 'a')
+				try:
+						f.write(u'%s\n' % (url))
+				finally:
+					f.close()
 				pass
 
 
 	except:
-		#print "No congression record found, date: ", date
+		print "An unexpected error occurred."
+		f = open('congressional_records_exception_URLs.csv', 'a')
+		try:
+			f.write(u'%s\n' % (url))
+		finally:
+			f.close()
 		pass
 
 get_congressional_records()
