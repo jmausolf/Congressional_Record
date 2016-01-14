@@ -6,16 +6,28 @@
 ###                            ###
 ##################################
 
+
+##########################################################
+#Ensure PDFTOTEXT Installed
+##########################################################
+
+type pdftotext >/dev/null 2>&1 || { echo >&2 "This package requires pdftotext, but it is not installed."; \
+ echo "Consider using homebrew and the command 'brew install poppler' to get pdftotext."; \
+ echo "Aborting script to prevent data loss."; exit 1; }
+
+
 ##########################################################
 #Change Directory to Congression Records Folder
 ##########################################################
-cd Python_Scripts/Test_Text
+
+cd Python_Scripts/Congressional_Records
+
 
 ##########################################################
 #Set Minimum File Size and Convert Accordingly
 ##########################################################
 minimumsize=7000
-for file in *
+for file in *.pdf
 do
 actualsize=$(wc -c <"$file")
 
