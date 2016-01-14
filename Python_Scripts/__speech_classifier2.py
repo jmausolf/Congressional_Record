@@ -231,7 +231,7 @@ def speech_classifier(folder_name, output_file, addtime=0, addloc=0, addcite=0):
 
 	for speech in speech_files:
 		print "Analyzing speech file ", speech, "..."
-		date = speech.split('-', 1)[1]
+		date = speech.split('-', 1)[1].replace(".txt", "")
 		n = len(df.index)
 
 		#Add Row to Data Frame
@@ -299,3 +299,4 @@ def speech_classifier(folder_name, output_file, addtime=0, addloc=0, addcite=0):
 
 
 speech_classifier("Congressional_Records", "Congressional_Records_data.csv")
+
