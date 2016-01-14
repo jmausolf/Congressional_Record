@@ -60,7 +60,9 @@ def getcongressURLs():
 	try:
 		for dt in range(0, len(x)):
 			date = str(x[dt]).replace("'", "").replace(",", "-").replace(" ", "").replace("(", "").replace(")", "")
+			#print date
 			full_url = getfullURL(date)
+			print full_url
 			f.write(u'%s\n' % (full_url))
 	finally:
 		f.close()
@@ -137,6 +139,7 @@ def get_congressional_records():
 	#getcongressURLs()
 
 	x = getdates()
+	#print x
 
 	#f = open('congressional_records_URLs2.csv', 'w')
 	try:
@@ -144,18 +147,13 @@ def get_congressional_records():
 		#for dt in range(300, 350):
 			date = str(x[dt]).replace("'", "").replace(",", "-").replace(" ", "").replace("(", "").replace(")", "")
 			url = str(getfullURL(date))
-
-			#f.write(u'%s\n' % (full_url))
 			print "Downloading congressional record for date: ", date
-			#full_url = str([url]).replace("[", "").replace("]", "")
-			#print full_url
+
 			signal.alarm(20)
 			try:
 				filename = wget.download(url)
 				print "\n"
 				time.sleep(5.5)
-
-
 			except TimeoutException:
 				print "Timeout exception"
 				f = open('congressional_records_exception_URLs.csv', 'a')
@@ -185,4 +183,11 @@ def get_congressional_records():
 			f.close()
 		pass
 
+
+
+
+
 get_congressional_records()
+
+
+
