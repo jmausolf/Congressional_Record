@@ -209,7 +209,7 @@ def get_congressional_records():
 
             except:
                 time.sleep(5.5)
-                print ("No congression record found, date: ", date)
+                print ("No congressional record found, date: ", date)
                 f = open('congressional_records_no_record_exception_URLs.csv', 'a')
                 try:
                     f.write(u'%s\n' % (url))
