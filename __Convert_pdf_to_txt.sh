@@ -1,7 +1,7 @@
 ##################################
 ###                            ###
 ###      Joshua G. Mausolf     ###
-###    Computation Institute   ###
+###   Department of Sociology  ###
 ###    University of Chicago   ###
 ###                            ###
 ##################################
@@ -20,13 +20,14 @@ type pdftotext >/dev/null 2>&1 || { echo >&2 "This package requires pdftotext, b
 #Change Directory to Congression Records Folder
 ##########################################################
 
-cd Python_Scripts/Congressional_Records
+cd Python_Scripts/Congressional_Records >/dev/null 2>&1 || { echo >&2 "Directory 'Python_Scripts/Congressional_Records' not found"; \
+    echo "Please make sure your speech files are in this directory and try again."; exit 1; }
 
 
 ##########################################################
 #Set Minimum File Size and Convert Accordingly
 ##########################################################
-minimumsize=7000
+minimumsize=6000
 for file in *.pdf
 do
 actualsize=$(wc -c <"$file")
@@ -52,13 +53,20 @@ mkdir "HTML_Error_Page_Requested_Not_Found"
 
 echo moving HTML error page files to new folder...
 
+htmlstring="DOCTYPE html"
+
 for file in *.txt
 do
 actualsize=$(wc -c <"$file")
 if [ $actualsize -ge $minimumsize ]; then
     continue
+
+elif grep -Fq "$htmlstring" "$file"; then
+	mv "$file" HTML_Error_Page_Requested_Not_Found
+
 else
-    mv "$file" HTML_Error_Page_Requested_Not_Found
+    continue
+
 fi
 done
 
