@@ -1,6 +1,7 @@
 ##################################
 ###                            ###
 ###      Joshua G. Mausolf     ###
+###   Department of Sociology  ###
 ###    University of Chicago   ###
 ###                            ###
 ##################################

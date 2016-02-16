@@ -1,7 +1,7 @@
 ##################################
 ###                            ###
 ###      Joshua G. Mausolf     ###
-###    Computation Institute   ###
+###   Department of Sociology  ###
 ###    University of Chicago   ###
 ###                            ###
 ##################################
