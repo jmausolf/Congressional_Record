@@ -12,6 +12,9 @@ import pandas as pd
 import numpy as np
 import glob
 import os
+import nltk
+from nltk import word_tokenize
+
 
 
 ##########################################################
@@ -47,6 +50,30 @@ def read_speech(speechfile):
 	raw1 = raw.replace('.', ' ')
 	sent = remove_non_ascii_2(raw1)
 	return sent
+
+
+def make_text(file, path=''):
+    if path=='':
+        filepath = file
+    else:
+        filepath = path+"/"+file
+
+    f = open(filepath)
+    raw0 = f.read()
+    raw1 = remove_non_ascii_2(raw0)
+    tokens = word_tokenize(raw1)
+    text = nltk.Text(tokens)
+    return text
+
+
+def read_speech2(speechfile):
+	speech = str(speechfile)
+	f = open(speech, 'rU')
+	raw = f.read().decode('utf8')
+	raw1 = raw.replace('.', ' ')
+	sent = remove_non_ascii_2(raw1)
+	return sent
+
 
 def get_url(speechfile):
 	speech = str(speechfile)
@@ -204,13 +231,11 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, addtime=0, addl
 	---------------------------------------------------------------
 	- terms			= the list of terms to look for in the speeches
 	---------------------------------------------------------------
-
-
 	"""
 
 
 	#Setup Initial Data Frame
-	header = ["DATE", "TIME", "LOCATION", "URL"]+terms
+	header = ["DATE", "TIME", "LOCATION", "URL", "TOKENS", "WORDS", "UNIQUE_WORDS"]+terms
 	index = np.arange(0)
 	df = pd.DataFrame(columns=header, index = index)
 
@@ -279,6 +304,15 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, addtime=0, addl
 			pass
 
 
+		#Add Tokens, Words, Unique Words
+		text = make_text(speech)
+		words = [w.lower() for w in text if w.isalpha()]
+		df.ix[n, "TOKENS"] = len(text)
+		df.ix[n, "WORDS"] = len(words)
+		df.ix[n, "UNIQUE_WORDS"] = len(set(words))
+
+
+		#Add Keyword Data
 		ngram1 = get_group_set(1, sent)
 		ngram2 = get_group_set(2, sent)
 		ngram3 = get_group_set(3, sent)
@@ -287,7 +321,6 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, addtime=0, addl
 		speech_phrase_counter3(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent)
 
 	os.chdir("..")
-
 	print df
 	df.to_csv(outfile, encoding='utf-8')
 	return df
@@ -295,14 +328,6 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, addtime=0, addl
 
 #speech_classifier("Congressional_Records", "Congressional_Records_data.csv")
 
-
-"""
-Right now the speech terms are globally defined. Make the parser require a list of speech terms. 
-Then you can have a separate file for each one. 
-Define the list of terms.
-Run the parser.
-
-"""
 
 
 
