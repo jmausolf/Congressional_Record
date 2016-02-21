@@ -214,7 +214,7 @@ def speech_phrase_counter3(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent):
 
 
 
-def speech_classifier(folder_name, ds1, ds2, output_file, terms, addtime=0, addloc=0, addcite=0):
+def speech_classifier(folder_name, ds1, ds2, output_file, terms, metric=0, addtime=0, addloc=0, addcite=0):
 	"""
 	---------------------------------------------------------------
 	Variables
@@ -305,11 +305,14 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, addtime=0, addl
 
 
 		#Add Tokens, Words, Unique Words
-		text = make_text(speech)
-		words = [w.lower() for w in text if w.isalpha()]
-		df.ix[n, "TOKENS"] = len(text)
-		df.ix[n, "WORDS"] = len(words)
-		df.ix[n, "UNIQUE_WORDS"] = len(set(words))
+		if metric==0:
+			pass
+		else:
+			text = make_text(speech)
+			words = [w.lower() for w in text if w.isalpha()]
+			df.ix[n, "TOKENS"] = len(text)
+			df.ix[n, "WORDS"] = len(words)
+			df.ix[n, "UNIQUE_WORDS"] = len(set(words))
 
 
 		#Add Keyword Data

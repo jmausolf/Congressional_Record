@@ -79,6 +79,6 @@ occupy_terms = wall_street+corporate_greed+inequality+fair_share+occupy+OWS_surv
 #speech_classifier("President", 0, 10, "Pres_Shootings.csv", gun_terms)
 
 #Occupy
-speech_classifier("Congressional_Records_Text", 5, 15, "Congressional_Records_data.csv", occupy_terms)
+speech_classifier("Congressional_Records_Text", 5, 15, "Congressional_Records_data.csv", occupy_terms, 1)
 #speech_classifier("President", 0, 10, "White_House_data.csv", occupy_terms)
 
