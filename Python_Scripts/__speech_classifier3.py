@@ -2,7 +2,6 @@
 ###                             ###
 ###      Joshua G. Mausolf      ###
 ###   Department of Sociology   ###
-###    Computation Institute    ###
 ###    University of Chicago    ###
 ###                             ###
 ###################################
@@ -23,8 +22,8 @@ from nltk import word_tokenize
 
 def group_text(text, group_size):
     """
-    groups a text into text groups set by group_size
-    returns a list of grouped strings
+    This function groups a text into text groups.
+    It returns a list of grouped strings.
     """
     word_list = text.split()
     group_list = []
@@ -32,7 +31,8 @@ def group_text(text, group_size):
         start = k
         end = k + group_size
         group_slice = word_list[start: end]
-        # append only groups of proper length/size
+
+        # Append only groups of proper length/size
         if len(group_slice) == group_size:
             group_list.append(" ".join(group_slice))
     return group_list
@@ -51,7 +51,6 @@ def read_speech(speechfile):
 	sent = remove_non_ascii_2(raw1)
 	return sent
 
-
 def make_text(file, path=''):
     if path=='':
         filepath = file
@@ -64,15 +63,6 @@ def make_text(file, path=''):
     tokens = word_tokenize(raw1)
     text = nltk.Text(tokens)
     return text
-
-
-def read_speech2(speechfile):
-	speech = str(speechfile)
-	f = open(speech, 'rU')
-	raw = f.read().decode('utf8')
-	raw1 = raw.replace('.', ' ')
-	sent = remove_non_ascii_2(raw1)
-	return sent
 
 
 def get_url(speechfile):
@@ -101,45 +91,19 @@ def ngram(n, data):
 #Speech Phrase Counter Functions
 ##########################################################
 
-def speech_phrase_counter(ngram1, ngram2, ngram3, ngram4, terms):
-	#print "FUNCTION TEST"
-	for term in terms:
-		for gram in ngram4:
-			if term == gram:
-				count = sent.count(gram)
-				print "Count: ", count, "| ", gram
-		for gram in ngram3:
-			if term == gram:
-				count = sent.count(gram)
-				print "Count: ", count, "| ", gram
-		for gram in ngram2:
-			if term == gram:
-				count = sent.count(gram)
-				print "Count: ", count, "| ", gram
-		for gram in ngram1:
-			if term == gram:
-				count = sent.count(gram)
-				print "Count: ", count, "| ", gram
-
-#speech_phrase_counter(ngram1, ngram2, ngram3, ngram4, terms)
-
 
 def find_time(text):
 	#Add Time to Data Frame
 	try:
 		try:
 			time = re.findall(r'\d{1,2}:\d{1,2}\s[A-Z].[A-Z].+', sent)
-			#time = time0[0].replace('P M ', 'PM').replace('A M ', 'AM')
-			#df.ix[n, "TIME"] = time
 			return time[0]
 		except:
 			try:
 				time = re.findall(r'\d{1,2}:\d{1,2}\s[A-Z].[A-Z].+', sent)
-				#df.ix[n, "TIME"] = time[0]
 				return time[0]
 			except:
 				time = re.findall(r'\d{1,2}(?:(?:AM|PM)|(?::\d{1,2})(?:AM|PM)?)', sent)
-				#df.ix[n, "TIME"] = time[0]
 				return time[0]
 	except:
 		pass
@@ -152,42 +116,39 @@ def return_time(text):
 		try:
 			time0 = re.findall(r'\d{1,2}:\d{1,2}\s[A-Z].[A-Z].+', sent)
 			time = time0[0].replace('P M ', 'PM').replace('A M ', 'AM')
-			#df.ix[n, "TIME"] = time
 			return time
 		except:
 			try:
 				time = re.findall(r'\d{1,2}:\d{1,2}\s[A-Z].[A-Z].+', sent)
-				#df.ix[n, "TIME"] = time[0]
 				return time[0]
 			except:
 				time = re.findall(r'\d{1,2}(?:(?:AM|PM)|(?::\d{1,2})(?:AM|PM)?)', sent)
-				#df.ix[n, "TIME"] = time[0]
 				return time[0]
 	except:
 		pass
 
-def speech_phrase_counter2(ngram1, ngram2, ngram3, ngram4, terms, df, n):
-	#print "FUNCTION TEST"
-	for term in terms:
-		for gram in ngram4:
-			if term == gram:
-				count = sent.count(gram)
-				df.ix[n, term] = count
-		for gram in ngram3:
-			if term == gram:
-				count = sent.count(gram)
-				df.ix[n, term] = count
-		for gram in ngram2:
-			if term == gram:
-				count = sent.count(gram)
-				df.ix[n, term] = count
-		for gram in ngram1:
-			if term == gram:
-				count = sent.count(gram)
-				df.ix[n, term] = count
 
-def speech_phrase_counter3(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent):
-	#print "FUNCTION TEST"
+def speech_phrase_counter(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent):
+
+	"""
+	This function counts the occurence of ngrams of size 1, 2, 3, and 4.
+	These are defined externally.
+	--------------------------------------------------------------------
+	It requires a list of terms. These can be of any number of ngrams
+	sizes 1-4.
+	--------------------------------------------------------------------
+	This function also requires a data frame (df). This should be 
+	a Pandas data frame in memory. It also requires an index term, n,
+	to add the counts to the correct cell in the df.
+	--------------------------------------------------------------------
+	The sent term is the processed text returned from
+	read_speech(speechfile)
+	--------------------------------------------------------------------
+	NOTE: This function is designed to be called within the function 
+	speech_classifier. 
+	--------------------------------------------------------------------
+	"""
+
 	for term in terms:
 		for gram in ngram4:
 			if term == gram:
@@ -213,7 +174,6 @@ def speech_phrase_counter3(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent):
 ##########################################################
 
 
-
 def speech_classifier(folder_name, ds1, ds2, output_file, terms, metric=0, addtime=0, addloc=0, addcite=0):
 	"""
 	---------------------------------------------------------------
@@ -231,8 +191,23 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, metric=0, addti
 	---------------------------------------------------------------
 	- terms			= the list of terms to look for in the speeches
 	---------------------------------------------------------------
+	- metric  		= option to add tokens, alphanumberic words,
+						and vocabulary metrics to dataset
+						using NLTK 
+	---------------------------------------------------------------
+	- addtime 		= option to try to extract time terms
+						default=0 == ignore (1 = run)
+	---------------------------------------------------------------
+	- addloc 		= option to try to extract location terms
+						default=0 == ignore (1 = run)
+	---------------------------------------------------------------
+	- addcite 		= option to try to extract url Citation
+						default=0 == ignore (1 = run)
+						this works for text files where the parser
+						adds the parsed URL to the first line of the
+						speech file.
+	---------------------------------------------------------------
 	"""
-
 
 	#Setup Initial Data Frame
 	header = ["DATE", "TIME", "LOCATION", "URL", "TOKENS", "WORDS", "UNIQUE_WORDS"]+terms
@@ -241,7 +216,6 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, metric=0, addti
 
 
 	#Get Files in Folder
-	#os.chdir("Speech_President")
 	folder = str(folder_name)
 	outfile = str(output_file)
 	os.chdir(folder)	
@@ -321,15 +295,13 @@ def speech_classifier(folder_name, ds1, ds2, output_file, terms, metric=0, addti
 		ngram3 = get_group_set(3, sent)
 		ngram4 = get_group_set(4, sent)
 
-		speech_phrase_counter3(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent)
+		#Count Keywords
+		speech_phrase_counter(ngram1, ngram2, ngram3, ngram4, terms, df, n, sent)
 
 	os.chdir("..")
 	print df
 	df.to_csv(outfile, encoding='utf-8')
 	return df
-
-
-#speech_classifier("Congressional_Records", "Congressional_Records_data.csv")
 
 
 

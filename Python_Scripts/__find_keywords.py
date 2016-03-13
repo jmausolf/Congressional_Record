@@ -2,7 +2,6 @@
 ###                             ###
 ###      Joshua G. Mausolf      ###
 ###   Department of Sociology   ###
-###    Computation Institute    ###
 ###    University of Chicago    ###
 ###                             ###
 ###################################
@@ -11,7 +10,7 @@
 from __speech_classifier3 import *
 
 ##########################################################
-#Example Keyword Categories with Keywords/Phrases
+#Example 1: Keyword Categories with Keywords/Phrases
 ##########################################################
 
 #Example
@@ -30,7 +29,7 @@ combined_terms = wall_street+corporate_greed+inequality+fair_share+occupy
 
 
 ##########################################################
-#Define Your Own Keyword Categories with Keywords/Phrases
+#Example 2: Keyword Categories with Keywords/Phrases
 ##########################################################
 
 guns = ["_start", "firearm", "guns", "gun", "automatic weapons", "automatic weapon", "cheap handguns", "handguns", "shotgun", "shotguns", "rifle", "rifles", "Saturday night special", "high capacity magazines", "assualt rifles", "sawed off shotguns", "silencers", "AK-47s", "AR15", "AR-15s", "Glock", "Glocks"]
@@ -46,7 +45,7 @@ gun_terms = guns+gun_laws+gun_violence+shootings
 
 ##########################################################
 #Define Your Own Keyword Categories with Keywords/Phrases
-#OCCUPY
+#OCCUPY WALL STREET
 ##########################################################
 
 wall_street = ["lobby", "lobbying", "lobbies", "special interest", "special interests", "revolving door", "campaign donor", "campaign donation", "campaign donations", "bidder", "highest bidder", "campaign contributions", "loophole", "loopholes", "tax shelter", "tax evasion", "write their own rules", "own rules", "Wall Street", "bailout", "bailouts"]
@@ -74,11 +73,46 @@ occupy_terms = wall_street+corporate_greed+inequality+fair_share+occupy+OWS_surv
 #Run 
 ##########################################################
 
-#Guns
-#speech_classifier("Congressional_Records_Text", 5, 15, "Crec_Shootings.csv", gun_terms)
-#speech_classifier("President", 0, 10, "Pres_Shootings.csv", gun_terms)
+"""
+---------------------------------------------------------------------
+	INSTRUCTIONS TO RUN THE PROGRAM
+---------------------------------------------------------------------
+
+	-	(1) To run the function, first define your full keyword list.
+		Several examples are above.
+
+---------------------------------------------------------------------
+	
+	- 	(2) Next, select the folder with the speech files.
+---------------------------------------------------------------------
+	- 	(3) Outline the string slice that contains the date for your
+		text file. 
+
+		Your text file should contain a date of the file
+		for example, 2011-09-17_ID1.txt or CREC-2015-01-03.txt.
+
+	- 	ds1:ds2 	= - date slices of filenames
+					E.g. the filename "2011-09-17_ID1.txt"
+						would want date slices of
+						ds1 = 0 and ds2 = 10
+						This takes the string slice 0:10
+						and provides a date = 2011-09-17
+
+---------------------------------------------------------------------
+	- 	(4) Specify the name of the output file. 
+---------------------------------------------------------------------
+	- 	(5) Specify other options if desired.
+			See further documentation under speech_classifier 
+			documentation.
+
+	speech_classifier(folder_name, ds1, ds2, output_file, terms, 
+					metric=0, addtime=0, addloc=0, addcite=0):
+
+---------------------------------------------------------------------
+"""
 
 #Occupy
 speech_classifier("Congressional_Records_Text", 5, 15, "Congressional_Records_data.csv", occupy_terms, 1)
 #speech_classifier("President", 0, 10, "White_House_data.csv", occupy_terms)
+
 
